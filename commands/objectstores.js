@@ -8,8 +8,12 @@ function ObjectStores(repl, client) {
 ObjectStores.prototype = {
   _objectStore: function(db, callback) {
     this.client.objectStores(db, function(err, list) {
-      process.stdout.write('\n');
-      process.stdout.write(list.join('\n') + '\n');
+      console.log();
+      console.log(
+        ' ',
+        list.map(function(i) { return i.cyan; }).join('\n  ')
+      );
+      console.log();
       callback();
     });
   },

@@ -11,8 +11,9 @@ Database.prototype = {
       }
 
       console.log(list.map(function(item) {
-        return item.white;
+        return item.cyan;
       }).join(' \n'));
+
       callback();
     }.bind(this));
   },
