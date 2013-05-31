@@ -1,0 +1,34 @@
+{
+  "name": "idb-remote-cli",
+  "version": "0.0.1",
+  "author": "James Lal [:lightsofapollo]",
+  "description": "Remote IndexedDB view for your console",
+  "main": "",
+
+  "keywords": [
+    "idb",
+    "indexeddb",
+    "database",
+    "proxy"
+  ],
+  "dependencies" : {
+    "idb-remote": "~0.0.1",
+    "socket.io-client": "~0.9",
+    "socket.io": "~0.9",
+    "commander": "~1.1",
+    "colors": "~0.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.7",
+    "test-agent": "~0.8",
+    "chai": "~1.6"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.4"
+  },
+
+  "scripts": {
+    "test": "make test-node"
+  }
+}

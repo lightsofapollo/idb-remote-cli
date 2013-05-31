@@ -1,0 +1,24 @@
+#! /usr/bin/env node
+
+var program = require('commander');
+program.
+  version(require('../package.json').version);
+
+program.
+  command('repl <host>').
+  description('begins REPL').
+  action(function(host) {
+    var socket = require('socket.io-client').connect(host + '/clients');
+
+    var IDBRemote = require('idb-remote');
+    var client = new IDBRemote.Client.Socketio(socket);
+
+    console.log('connecting to host:', host);
+
+    socket.once('connect', function() {
+      require('../cli')(client);
+    });
+  });
+
+
+program.parse(process.argv);
