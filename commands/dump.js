@@ -12,8 +12,17 @@ Dump.prototype = {
   action: function(line, callback) {
     var client = this.client;
 
+    function dump(err, db, store) {
+      if (err) {
+        console.log('Error:', err);
+        return callback();
+      }
 
-    function dump(db, store) {
+      if (!db || !store) {
+        console.log('Error: missing db: "%s" or store: "%s"', db, store);
+        return callback();
+      }
+
       var file = fsPath.join(
         process.cwd(),
         'dump-' + db + '-' + store + '-' + Date.now() + '.json'
