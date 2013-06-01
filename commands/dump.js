@@ -24,7 +24,6 @@ Dump.prototype = {
 
       var all = client.all(db, store);
       all.on('data', function(data) {
-        console.log('WRITE:', row);
         var content = JSON.stringify(data);
         if (row++ !== 0) {
           content = ',' + content;
