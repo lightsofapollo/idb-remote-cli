@@ -85,7 +85,10 @@ function cli(client) {
       new (require('./commands/databases'))(rli, client),
 
     objectStores:
-      new (require('./commands/objectstores'))(rli, client)
+      new (require('./commands/objectstores'))(rli, client),
+
+    dump:
+      new (require('./commands/dump'))(rli, client)
   };
 
   // show the help menu
