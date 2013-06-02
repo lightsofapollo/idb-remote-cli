@@ -1,5 +1,4 @@
 function cli(client) {
-  require('colors');
   var util = require('util');
 
   var readline = require('readline');

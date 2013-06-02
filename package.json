@@ -16,7 +16,7 @@
     "socket.io-client": "~0.9",
     "socket.io": "~0.9",
     "commander": "~1.1",
-    "colors": "~0.6"
+    "cli-color": "~0.2"
   },
   "devDependencies": {
     "mocha": "~1.7",
