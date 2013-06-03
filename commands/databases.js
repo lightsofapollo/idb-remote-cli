@@ -1,19 +1,13 @@
-function Database(rli, client) {
-  this.rli = rli;
-  this.client = client;
-}
+var Command = require('../lib/command-interface').Command;
 
-Database.prototype = {
-  action: function(line, callback) {
+module.exports = Command.create({
+  action: function(argv, callback) {
     this.client.databases(function(err, list) {
       if (err) {
         return callback(err);
       }
 
-      console.log(list.map(function(item) {
-        return item.cyan;
-      }).join(' \n'));
-
+      console.log(list.join(' \n'));
       callback();
     }.bind(this));
   },
@@ -21,6 +15,4 @@ Database.prototype = {
   help: function() {
     return 'displays all available databases';
   }
-};
-
-module.exports = Database;
+});

@@ -133,7 +133,11 @@ suite('command interface', function() {
   });
 
   suite('invoke command', function() {
-    setup(function() {
+    setup(function(done) {
+      subject.rli.prompt = function() {
+        subject.rli.prompt = function() {};
+        done();
+      };
       subject.start();
     });
 

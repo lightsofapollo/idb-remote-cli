@@ -1,25 +1,21 @@
 var sortAndRank = require('../lib/sortandrank');
+var Command = require('../lib/command-interface').Command;
 
-function ObjectStores(repl, client) {
-  this.client = client;
-  this.repl = repl;
-}
-
-ObjectStores.prototype = {
+module.exports = Command.create({
   _objectStore: function(db, callback) {
     this.client.objectStores(db, function(err, list) {
       console.log();
       console.log(
         ' ',
-        list.map(function(i) { return i.cyan; }).join('\n  ')
+        list.join('\n  ')
       );
       console.log();
       callback();
     });
   },
 
-  action: function(line, callback) {
-    var db = line.split(' ')[1] || '';
+  action: function(argv, callback) {
+    var db = argv[1] || '';
     var self = this;
 
     this.client.databases(function(err, list) {
@@ -36,29 +32,21 @@ ObjectStores.prototype = {
     });
   },
 
-  completer: function(line, callback) {
-    var items = line.split(' ');
-    var partial = items[1];
-    var prefix = items[0] + ' ';
+  completer: function(argv, callback) {
+    var partial = argv[1];
 
     this.client.databases(function(err, list) {
-      var results = sortAndRank(list, prefix, function(item) {
+      var results = sortAndRank(list, function(item) {
         return item.indexOf(partial);
       });
 
       var item;
 
-      callback(null,
-        (item = (results.length ?
-          [results, line] :
-          [results, results[0]]))
-      );
+      callback(null, [results, partial]);
     });
   },
 
   help: function() {
     return "[database] shows all stores for given db";
   }
-};
-
-module.exports = ObjectStores;
+});

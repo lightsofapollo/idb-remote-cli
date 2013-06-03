@@ -16,7 +16,7 @@ program.
     console.log('connecting to host:', host);
 
     socket.once('connect', function() {
-      require('../cli')(client);
+      require('../client-commands')(client);
     });
   });
 

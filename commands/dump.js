@@ -1,15 +1,11 @@
+var Command = require('../lib/command-interface').Command;
 var sortAndRank = require('../lib/sortandrank');
 var validate = require('../lib/validate');
 var fsPath = require('path');
 var fs = require('fs');
 
-function Dump(rli, client) {
-  this.rli = rli;
-  this.client = client;
-}
-
-Dump.prototype = {
-  action: function(line, callback) {
+module.exports = Command.create({
+  action: function(argv, callback) {
     var client = this.client;
 
     function dump(err, db, store) {
@@ -52,7 +48,7 @@ Dump.prototype = {
       });
     }
 
-    validate(this.client, line).
+    validate(this.client, argv).
       // <db>, <store>
       objectStore(1, 2).
       complete(dump);
@@ -63,21 +59,18 @@ Dump.prototype = {
            'database/object store to a json file';
   },
 
-  completer: function(line, callback) {
-    var parts = line.split(' ');
-
-    if (parts.length <= 2) {
+  completer: function(argv, callback) {
+    if (argv.length <= 2) {
       return this.completeDb(
-        parts.slice(0).join('') + ' ',
-        parts.slice(1),
+        argv[1], // db
         callback
       );
     }
 
-    if (parts.length <= 3)
+    if (argv.length <= 3)
       return this.completeStore(
-        parts.slice(0, 2).join(' ') + ' ',
-        parts.slice(1),
+        argv[1], // db
+        argv[2], // store
         callback
       );
 
@@ -85,9 +78,8 @@ Dump.prototype = {
     callback(null, [[], line]);
   },
 
-  completeDb: function(line, parts, callback) {
+  completeDb: function(db, callback) {
     this.client.databases(function(err, list) {
-      var db = parts[0];
       var results = sortAndRank(list, function(part) {
         return part.indexOf(db);
       });
@@ -96,10 +88,7 @@ Dump.prototype = {
     });
   },
 
-  completeStore: function(line, parts, callback) {
-    var db = parts[0];
-    var store = parts[1] || ' ';
-
+  completeStore: function(db, store, callback) {
     this.client.objectStores(db, function(err, list) {
       var results = sortAndRank(list, function(part) {
         return part.indexOf(store);
@@ -108,7 +97,4 @@ Dump.prototype = {
       callback(null, [results, store]);
     });
   }
-};
-
-module.exports = Dump;
-
+});
